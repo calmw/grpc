@@ -15,6 +15,6 @@
 #### 安装编译工具
 
     Mac:
-        brew install protobuf 
+        brew install protobuf
         brew install protoc-gen-go-grpc
         

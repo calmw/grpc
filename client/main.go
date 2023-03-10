@@ -23,15 +23,14 @@ func main() {
 	result, err := c.GetUser(context.Background(), &users.UserGetRequest{
 		Email: "<?b Start>jane@doe.com<?b End?>",
 	})
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	fmt.Fprintf(
 		os.Stdout,
 		"User: %s %s\n",
 		result.User.FirstName,
 		result.User.LastName,
 	)
+
 }
 
 func setupGrpcConnection(addr string) (*grpc.ClientConn, error) {
@@ -45,8 +44,4 @@ func setupGrpcConnection(addr string) (*grpc.ClientConn, error) {
 
 func getUserServiceClient(conn *grpc.ClientConn) users.UsersClient {
 	return users.NewUsersClient(conn)
-}
-
-func getUser(client users.UsersClient, u *users.UserGetRequest) (*users.UserGetReply, error) {
-	return client.GetUser(context.Background(), u)
 }
