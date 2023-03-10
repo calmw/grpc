@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
-	"errors"
 	users "github.com/calmw/grpc-service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 	"os"
@@ -37,7 +38,7 @@ func (s *userService) GetUser(ctx context.Context, in *users.UserGetRequest) (*u
 	)
 	components := strings.Split(in.Email, "@")
 	if len(components) != 2 {
-		return nil, errors.New("invalid email address")
+		return nil, status.Error(codes.InvalidArgument, "Invalid email address specified") // status.Error函数创建错误，可以错误码和错误信息一块创建
 	}
 	u := users.User{
 		Id:        in.Id,

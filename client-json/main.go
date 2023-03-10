@@ -5,6 +5,8 @@ import (
 	"fmt"
 	users "github.com/calmw/grpc-service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
 	"os"
@@ -24,8 +26,9 @@ func main() {
 	defer conn.Close()
 	c := getUserServiceClient(conn)
 	result, err := getUser(c, u)
-	if err != nil {
-		log.Fatal(err)
+	s := status.Convert(err) // status.Convert函数分别访问错误代码和错误消息
+	if s.Code() != codes.OK {
+		log.Fatalf("Request failed: %v-%v\n", s.Code(), s.Message())
 	}
 	data, err := getUserResponseJson(result)
 	if err != nil {

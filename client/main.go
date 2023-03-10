@@ -5,6 +5,8 @@ import (
 	"fmt"
 	users "github.com/calmw/grpc-service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"os"
 )
@@ -23,6 +25,11 @@ func main() {
 	result, err := c.GetUser(context.Background(), &users.UserGetRequest{
 		Email: "<?b Start>jane@doe.com<?b End?>",
 	})
+
+	s := status.Convert(err) // status.Convert函数分别访问错误代码和错误消息
+	if s.Code() != codes.OK {
+		log.Fatalf("Request failed: %v-%v\n", s.Code(), s.Message())
+	}
 
 	fmt.Fprintf(
 		os.Stdout,
