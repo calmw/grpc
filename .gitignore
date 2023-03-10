@@ -16,6 +16,4 @@
 
 .idea/
 
-client/client
-
-server/server
+cmd/
