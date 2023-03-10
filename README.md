@@ -1,3 +1,3 @@
 # grpc
 
-    grpc使用的简单总结
+    grpc简单总结
