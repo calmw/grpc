@@ -2,7 +2,7 @@ module client-json
 
 go 1.18
 
-replace github.com/calmw/grpc-service => ../service
+replace github.com/calmw/grpc-service => ./../service
 
 require (
 	github.com/calmw/grpc-service v0.0.0-00010101000000-000000000000

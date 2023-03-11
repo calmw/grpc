@@ -16,4 +16,4 @@ require (
 	google.golang.org/protobuf v1.29.0 // indirect
 )
 
-replace github.com/calmw/grpc-service => ../service
+replace github.com/calmw/grpc-service => ./../service
