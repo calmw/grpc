@@ -79,5 +79,5 @@ func setupChat(r io.Reader, w io.Writer, c svc.UsersClient) error {
 
 	}
 
-	return stream.CloseSend()
+	return stream.CloseSend() // 该方法将关闭服务器上的客户端链接，并返回io.EOF错误值
 }
