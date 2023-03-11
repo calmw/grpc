@@ -18,7 +18,6 @@ func main() {
 	}
 	conn, err := setupGrpcConnection(os.Args[1])
 	if err != nil {
-		fmt.Println(1)
 		log.Fatal(err)
 	}
 	defer conn.Close()
