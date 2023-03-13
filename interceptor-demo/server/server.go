@@ -27,8 +27,8 @@ func main() {
 		log.Fatal(err)
 	}
 	s := grpc.NewServer(
-		grpc.UnaryInterceptor(loggingUnaryInterceptor),
-		grpc.StreamInterceptor(loggingStreamInterceptor),
+		grpc.UnaryInterceptor(loggingUnaryInterceptor),   // 注册服务端一元拦截器
+		grpc.StreamInterceptor(loggingStreamInterceptor), // 注册服务端流拦截器
 	)
 	registerServer(s)
 	log.Fatal(startServer(s, lis))

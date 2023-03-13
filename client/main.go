@@ -117,8 +117,14 @@ func setupGrpcConnection(addr string) (*grpc.ClientConn, error) {
 		addr,
 		grpc.WithInsecure(), // 与服务器建立非TSL连接
 		grpc.WithBlock(),    // 确保在函数返回之前建立连接。这意味着如果在服务器启动并运行之前运行客户端，它将无限期等待。
-		grpc.WithUnaryInterceptor(metadataUnaryInterceptor),   // 注册客户端一元拦截器
-		grpc.WithStreamInterceptor(metadataStreamInterceptor), // 注册客户端流拦截器
+		grpc.WithChainUnaryInterceptor( // 用于注册多个客户端一元拦截器，最内层的拦截器首先执行
+			metadataUnaryInterceptor,
+			// ... 其他拦截器
+		),
+		grpc.WithChainStreamInterceptor( // 用于注册多个客户端流拦截器，最内层的拦截器首先执行
+			metadataStreamInterceptor,
+			// ... 其他拦截器
+		),
 	)
 }
 
