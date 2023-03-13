@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// 测试 check
+	// 测试 check， 客户端在必要时候可以定时调用Check来检查服务端健康变化
 	resp, err := healthClient.Check(
 		context.Background(),
 		&healthz.HealthCheckRequest{
@@ -38,7 +38,7 @@ func main() {
 	}
 	log.Println("Check, SERVING...")
 
-	// 测试watch
+	// 测试watch， 当服务端更改状态时（例如调用updateServiceHealth更改），客户端就会收到状态变化
 	client, err := healthClient.Watch(
 		context.Background(),
 		&healthz.HealthCheckRequest{
