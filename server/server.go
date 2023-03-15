@@ -20,6 +20,8 @@ import (
 	"time"
 )
 
+const RecvMsgTimeout = time.Millisecond * 500
+
 func main() {
 	listenAddr := os.Getenv("LISTEN_ADDR")
 	if len(listenAddr) == 0 {
@@ -146,7 +148,7 @@ func (s *userService) GetUser(ctx context.Context, in *svc.UserGetRequest) (*svc
 		LastName:  components[1],
 		Age:       36,
 	}
-	time.Sleep(time.Second)
+	//time.Sleep(time.Second)  // 测试服务端超时
 	return &svc.UserGetReply{User: &u}, nil
 }
 
@@ -228,7 +230,7 @@ func loggingStreamInterceptor(
 	handler grpc.StreamHandler,
 ) error {
 	start := time.Now()
-	serverStream := wrappedServerStream{ServerStream: stream}
+	serverStream := wrappedServerStream{ServerStream: stream, RecvMsgTimeout: RecvMsgTimeout}
 	err := handler(srv, serverStream)
 	ctx := stream.Context()
 	logMessage(ctx, info.FullMethod, time.Since(start), err)
@@ -252,7 +254,7 @@ func panicStreamInterceptor(
 			)
 		}
 	}()
-	serverStream := wrappedServerStream{ServerStream: stream}
+	serverStream := wrappedServerStream{ServerStream: stream, RecvMsgTimeout: RecvMsgTimeout}
 	err = handler(srv, serverStream)
 
 	return
@@ -275,7 +277,7 @@ func timeoutStreamInterceptor(
 			)
 		}
 	}()
-	serverStream := wrappedServerStream{ServerStream: stream, RecvMsgTimeout: 500 * time.Millisecond}
+	serverStream := wrappedServerStream{ServerStream: stream, RecvMsgTimeout: RecvMsgTimeout}
 	err = handler(srv, serverStream)
 
 	return
